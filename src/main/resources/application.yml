@@ -23,6 +23,19 @@ spring:
       pool-name: hikariPool
       max-lifetime: 60000
       connection-timeout: 30000
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: com.chinamobile.iot.alertmanager.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
+      logic-delete-field: flag
+      # 逻辑已删除值(默认为 1)
+      logic-delete-value: 1
+      # 逻辑未删除值(默认为 0)
+      logic-not-delete-value: 0
 file:
   system:
-    prefix: http://49.235.39.190:8080
+    prefix: http://halo-tp.cn:8080

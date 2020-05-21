@@ -2,15 +2,18 @@ package com.pic.record.picturerecord.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.pic.record.picturerecord.dto.res.FileSystemRes;
+import com.pic.record.picturerecord.entity.PicIndex;
 import com.pic.record.picturerecord.enums.ErrorCode;
 import com.pic.record.picturerecord.exception.CommonException;
 import com.pic.record.picturerecord.service.FileSystemService;
+import com.pic.record.picturerecord.service.PicIndexService;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 
 /**
@@ -27,6 +30,9 @@ public class FileSystemServiceImpl implements FileSystemService {
     private String prefix;
 
     private static final String path = "/upload";
+
+    @Resource
+    private PicIndexService picIndexService;
 
     @Override
     public FileSystemRes upload(MultipartFile file, String savePath) {
@@ -65,6 +71,9 @@ public class FileSystemServiceImpl implements FileSystemService {
 
             res = JSONObject.parseObject(result, FileSystemRes.class);
         }
+
+        PicIndex picIndex = new PicIndex(res);
+        picIndexService.save(picIndex);
         return res;
     }
 }
