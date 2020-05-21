@@ -2,6 +2,8 @@ package com.pic.record.picturerecord.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.pic.record.picturerecord.dto.res.FileSystemRes;
+import com.pic.record.picturerecord.enums.ErrorCode;
+import com.pic.record.picturerecord.exception.CommonException;
 import com.pic.record.picturerecord.service.FileSystemService;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +26,7 @@ public class FileSystemServiceImpl implements FileSystemService {
     @Value("${file.system.prefix}")
     private String prefix;
 
-    private static final String path = "/group1/upload";
+    private static final String path = "/upload";
 
     @Override
     public FileSystemRes upload(MultipartFile file, String savePath) {
@@ -57,6 +59,7 @@ public class FileSystemServiceImpl implements FileSystemService {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            throw new CommonException(ErrorCode.UPLOAD_ERROR);
         }
         if (StringUtils.isNotBlank(result)) {
 

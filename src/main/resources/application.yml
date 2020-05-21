@@ -1,0 +1,28 @@
+server:
+  port: 8088
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  application:
+    name: picture-record
+  messages:
+    basename: i18n/messages
+  datasource:
+    url: jdbc:mysql://localhost:3306/pic_record?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    initialization-mode: always
+    continue-on-error: true
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 200
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: hikariPool
+      max-lifetime: 60000
+      connection-timeout: 30000
+file:
+  system:
+    prefix: http://49.235.39.190:8080
