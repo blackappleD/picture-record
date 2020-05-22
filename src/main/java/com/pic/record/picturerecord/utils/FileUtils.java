@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -55,7 +54,7 @@ public class FileUtils {
 //        dictionary : Exif SubIFD  -->name : Date/Time Original  -->desc : 2020:04:01 15:49:46
         ImageExifInfo imageExifInfo = new ImageExifInfo();
         metadata.getDirectories().forEach(directory -> {
-                    if ("Exif IFD0".equals(directory.getName())) {
+                    if ("Exif IFD0".equals(directory.getName()) || "Exif SubIFD".equals(directory.getName())) {
                         directory.getTags().forEach(tag -> {
                             switch (ExifEnum.of(tag.getTagName())) {
                                 case Make:
@@ -83,7 +82,7 @@ public class FileUtils {
                                     imageExifInfo.setIsoSpeedRatings(tag.getDescription());
                                     break;
                                 case DateTimeOriginal:
-                                    imageExifInfo.setDate(Instant.parse(tag.getDescription()));
+                                    imageExifInfo.setDate(DateUtils.convertTimeToInstantOnUtc(tag.getDescription()));
                                     break;
                                 case LensSpecification:
                                     imageExifInfo.setLensSpecification(tag.getDescription());

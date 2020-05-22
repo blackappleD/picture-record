@@ -35,6 +35,7 @@ public enum ExifEnum {
     private String tag;
 
     ExifEnum(String tag) {
+        this.tag = tag;
     }
 
     public String getTag() {
