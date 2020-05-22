@@ -2,7 +2,12 @@ server:
   port: 8088
   tomcat:
     uri-encoding: UTF-8
+
 spring:
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
   application:
     name: picture-record
   messages:

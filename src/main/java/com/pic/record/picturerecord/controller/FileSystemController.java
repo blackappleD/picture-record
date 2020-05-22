@@ -4,14 +4,13 @@ import com.pic.record.picturerecord.dto.DataResponse;
 import com.pic.record.picturerecord.dto.res.FileSystemRes;
 import com.pic.record.picturerecord.service.FileSystemService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.time.Instant;
 
 /**
  * description:
@@ -29,8 +28,13 @@ public class FileSystemController {
     private FileSystemService fileSystemService;
 
     @PostMapping(value = "/upload")
+    @ApiOperation(value = "上传图片")
     public DataResponse<FileSystemRes> upload(MultipartFile file,
-                                              @RequestParam(required = false) @ApiParam(value = "文件存储path") String savePath) {
-        return DataResponse.of(fileSystemService.upload(file, savePath));
+                                              @RequestParam(required = false, defaultValue = "/pics") @ApiParam(value = "文件存储path") String savePath,
+                                              @RequestParam(required = false) @ApiParam(value = "拍摄日期") Instant shotDate,
+                                              @RequestParam(required = false) @ApiParam(value = "拍摄地点") String shotPlace) {
+
+        return DataResponse.of(fileSystemService.upload(file, savePath, shotDate, shotPlace));
     }
+
 }
