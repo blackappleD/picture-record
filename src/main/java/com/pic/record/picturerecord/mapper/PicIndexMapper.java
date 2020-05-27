@@ -11,4 +11,6 @@ import com.pic.record.picturerecord.entity.PicIndex;
  * @date 2020/5/21 16:49
  */
 public interface PicIndexMapper extends BaseMapper<PicIndex> {
+
+
 }
