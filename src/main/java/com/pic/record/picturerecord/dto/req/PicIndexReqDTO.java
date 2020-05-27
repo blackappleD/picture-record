@@ -23,6 +23,9 @@ public class PicIndexReqDTO {
     @ApiModelProperty(value = "拍摄日期")
     private Instant shotDate;
 
-    @ApiModelProperty(value = "拍摄地点")
-    private String shotPlace;
+    @ApiModelProperty(value = "拍摄国家")
+    private String country;
+
+    @ApiModelProperty(value = "拍摄城市")
+    private String city;
 }

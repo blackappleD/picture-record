@@ -1,5 +1,6 @@
 package com.pic.record.picturerecord.service;
 
+import com.pic.record.picturerecord.dto.req.PicIndexReqDTO;
 import com.pic.record.picturerecord.dto.res.FileSystemRes;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,8 +15,7 @@ import java.time.Instant;
  */
 public interface FileSystemService {
 
-    FileSystemRes upload(MultipartFile file, String savePath, Instant shotTime, String shotPlace);
-
+    FileSystemRes upload(MultipartFile file, String savePath, PicIndexReqDTO picIndexReqDTO);
 
 
 }

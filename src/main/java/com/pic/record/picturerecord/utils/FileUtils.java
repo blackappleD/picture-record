@@ -1,7 +1,10 @@
 package com.pic.record.picturerecord.utils;
 
+import com.drew.imaging.FileTypeDetector;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
+import com.drew.imaging.TypeChecker;
+import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Metadata;
 import com.pic.record.picturerecord.entity.ImageExifInfo;
 import com.pic.record.picturerecord.enums.ErrorCode;
@@ -11,8 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * description:
@@ -23,13 +25,69 @@ import java.util.UUID;
  */
 public class FileUtils {
 
+    private static final Set<String> supportedExtensions = new HashSet<>(
+            Arrays.asList(
+                    "jpg", "jpeg", "png", "gif", "bmp", "heic", "heif", "ico", "webp", "pcx", "ai", "eps",
+                    "nef", "crw", "cr2", "orf", "arw", "raf", "srw", "x3f", "rw2", "rwl", "dcr",
+                    "tif", "tiff", "psd", "dng",
+                    "mp3",
+                    "j2c", "jp2", "jpf", "jpm", "mj2",
+                    "3g2", "3gp", "m4v", "mov", "mp4", "m2v", "mts",
+                    "pbm", "pnm", "pgm", "ppm"));
+
+    /**
+     * 判断是否是媒体文件
+     *
+     * @param file
+     * @return
+     */
+    public boolean shouldProcess(MultipartFile file) {
+        String extension = getExtension(file);
+        return extension != null && supportedExtensions.contains(extension.toLowerCase());
+    }
+
+    /**
+     * 判断是否是媒体文件
+     *
+     * @param extension
+     * @return
+     */
+    public static boolean shouldProcess(String extension) {
+        return extension != null && supportedExtensions.contains(extension.toLowerCase());
+    }
+
+    /**
+     * 获取文件后缀
+     *
+     * @param file
+     * @return
+     */
+    public static String getExtension(MultipartFile file) {
+        String fileName = file.getName();
+        int i = fileName.lastIndexOf('.');
+        if (i == -1) {
+            return null;
+        }
+        if (i == fileName.length() - 1) {
+            return null;
+        }
+        return fileName.substring(i + 1);
+    }
+
+    /**
+     * 处理媒体文件
+     *
+     * @param multipartFile
+     * @return
+     */
     public static ImageExifInfo handleImage(MultipartFile multipartFile) {
 
-        // 获取文件名
-        String fileName = multipartFile.getOriginalFilename();
         // 获取文件后缀
-        String prefix = fileName.substring(fileName.lastIndexOf("."));
+        String prefix = getExtension(multipartFile);
         // 用uuid作为文件名，防止生成的临时文件重复
+        if (!shouldProcess(prefix)) {
+            throw new CommonException(ErrorCode.HANDLE_EXIF);
+        }
         File tempFile = null;
         Metadata metadata = null;
         try {
@@ -37,7 +95,7 @@ public class FileUtils {
             multipartFile.transferTo(tempFile);
             metadata = ImageMetadataReader.readMetadata(Objects.requireNonNull(tempFile));
         } catch (IOException | ImageProcessingException e) {
-            throw new CommonException(ErrorCode.UPLOAD_ERROR);
+            throw new CommonException(ErrorCode.HANDLE_EXIF);
         }
         //程序结束时，删除临时文件
         tempFile.delete();

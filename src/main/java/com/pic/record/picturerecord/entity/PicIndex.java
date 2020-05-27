@@ -1,7 +1,6 @@
 package com.pic.record.picturerecord.entity;
 
-import com.alibaba.fastjson.JSONObject;
-import com.drew.metadata.Metadata;
+import com.pic.record.picturerecord.dto.req.PicIndexReqDTO;
 import com.pic.record.picturerecord.dto.res.FileSystemRes;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,7 +26,9 @@ public class PicIndex extends BaseEntity {
 
     private Instant shotDate;
 
-    private String shotPlace;
+    private String country;
+
+    private String city;
 
     private String imageExifInfo;
 
@@ -35,12 +36,19 @@ public class PicIndex extends BaseEntity {
 
     }
 
-    public PicIndex(FileSystemRes file, Instant shotDate, String shotPlace, String imageExifInfo) {
-        if (null != shotDate) {
-            this.shotDate = shotDate;
+    public PicIndex(FileSystemRes file, PicIndexReqDTO picIndexReqDTO, String imageExifInfo) {
+        if (null != picIndexReqDTO.getShotDate()) {
+            this.shotDate = picIndexReqDTO.getShotDate();
         }
-        if (null != shotPlace) {
-            this.shotPlace = shotPlace;
+        if (null != picIndexReqDTO.getDescription()) {
+            this.description = picIndexReqDTO.getDescription();
+        }
+        if (null != picIndexReqDTO.getCountry()) {
+            this.country = picIndexReqDTO.getCountry();
+        }
+        if (null != picIndexReqDTO.getCity()) {
+
+            this.city = picIndexReqDTO.getCity();
         }
         this.path = file.getPath();
         this.imageExifInfo = imageExifInfo;

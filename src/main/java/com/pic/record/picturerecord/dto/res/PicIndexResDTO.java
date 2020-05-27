@@ -23,7 +23,9 @@ public class PicIndexResDTO {
 
     private Instant shotDate;
 
-    private String shotPlace;
+    private String country;
+
+    private String city;
 
     private ImageExifInfo imageExifInfo;
 }

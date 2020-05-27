@@ -1,6 +1,7 @@
 package com.pic.record.picturerecord.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.pic.record.picturerecord.dto.req.PicIndexReqDTO;
 import com.pic.record.picturerecord.dto.res.FileSystemRes;
 import com.pic.record.picturerecord.entity.ImageExifInfo;
 import com.pic.record.picturerecord.entity.PicIndex;
@@ -17,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.time.Instant;
 
 /**
  * description:
@@ -38,7 +38,7 @@ public class FileSystemServiceImpl implements FileSystemService {
     private PicIndexService picIndexService;
 
     @Override
-    public FileSystemRes upload(MultipartFile file, String savePath, Instant shotDate, String shotPlace) {
+    public FileSystemRes upload(MultipartFile file, String savePath, PicIndexReqDTO picIndexReqDTO) {
 
         String result = null;
         FileSystemRes res = null;
@@ -74,9 +74,8 @@ public class FileSystemServiceImpl implements FileSystemService {
 
             res = JSONObject.parseObject(result, FileSystemRes.class);
         }
-
         ImageExifInfo imageExifInfo = FileUtils.handleImage(file);
-        PicIndex picIndex = new PicIndex(res, shotDate, shotPlace, JSONObject.toJSONString(imageExifInfo));
+        PicIndex picIndex = new PicIndex(res, picIndexReqDTO, JSONObject.toJSONString(imageExifInfo));
         picIndexService.save(picIndex);
         return res;
     }

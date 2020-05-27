@@ -9,7 +9,11 @@ package com.pic.record.picturerecord.enums;
  */
 public enum ErrorCode {
 
-    UPLOAD_ERROR(3000, "upload.error");
+    UPLOAD_ERROR(3000, "3000"),
+
+    HANDLE_EXIF(3001, "3001"),
+
+    FILE_ERROR(3002, "3002");
     private Integer code;
 
     private String message;

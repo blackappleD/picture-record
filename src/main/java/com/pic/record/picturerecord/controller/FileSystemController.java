@@ -1,6 +1,7 @@
 package com.pic.record.picturerecord.controller;
 
 import com.pic.record.picturerecord.dto.DataResponse;
+import com.pic.record.picturerecord.dto.req.PicIndexReqDTO;
 import com.pic.record.picturerecord.dto.res.FileSystemRes;
 import com.pic.record.picturerecord.service.FileSystemService;
 import io.swagger.annotations.Api;
@@ -31,10 +32,9 @@ public class FileSystemController {
     @ApiOperation(value = "上传图片")
     public DataResponse<FileSystemRes> upload(MultipartFile file,
                                               @RequestParam(required = false, defaultValue = "/pics") @ApiParam(value = "文件存储path") String savePath,
-                                              @RequestParam(required = false) @ApiParam(value = "拍摄日期") Instant shotDate,
-                                              @RequestParam(required = false) @ApiParam(value = "拍摄地点") String shotPlace) {
+                                              PicIndexReqDTO picIndexReqDTO) {
 
-        return DataResponse.of(fileSystemService.upload(file, savePath, shotDate, shotPlace));
+        return DataResponse.of(fileSystemService.upload(file, savePath, picIndexReqDTO));
     }
 
 }
